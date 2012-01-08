@@ -2,6 +2,9 @@
 
 class App extends BaseApplication
 {
+    const EVENT_LOGIN_SUCCESS = 1;
+    const EVENT_LOGIN_FAILURE = 2;
+
     public function actionIndex($params=null){
         if(isset($_SESSION["user"])){
             echo "You are logged in as \"".$_SESSION["user"]["login"]."\". <a href='/?action=logout'>Logout</a>";
@@ -30,7 +33,9 @@ class App extends BaseApplication
                    $user=Auth::authenticate($login,$pass);
                    if(!is_null($user)){
                        $_SESSION["user"] = $user;
-                       //TODO: Notify success
+
+                       $this->notify(App::EVENT_LOGIN_SUCCESS);
+
                        header("Location: /");
                    } else {
                        $error["no-such-user"] = "Wrong login/pass pair";
@@ -46,6 +51,9 @@ class App extends BaseApplication
            echo "<h1>Login page</h1>";
 
            if(isset($error) && (count($error)>0)) {
+
+               $this->notify(App::EVENT_LOGIN_FAILURE);
+
                foreach($error as $e){
                     echo "<span style='color:#ff0000'>".$e."</span><br/>";
                }
@@ -61,10 +69,6 @@ class App extends BaseApplication
            }
            echo "   />";
 
-           if(isset($error["login"])) {
-               echo "<span style='color:#ff0000'>".$error["login"]."</span>";
-           }
-
            echo "   <br/>
                     <label for='pass'>Pass:</label>&nbsp;&nbsp;
                     <input id='pass' type='password' name='params[user][pass]'";
@@ -73,10 +77,6 @@ class App extends BaseApplication
                echo "value='".$params["user"]["pass"]."'";
            }
            echo "   />";
-
-           if(isset($error["pass"])) {
-               echo "<span style='color:#ff0000'>".$error["pass"]."</span>";
-           }
 
            echo "   <br/>
                     <input type='submit'/>

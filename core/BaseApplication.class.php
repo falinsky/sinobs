@@ -1,12 +1,12 @@
 <?php
 
-abstract class BaseApplication
+abstract class BaseApplication extends Observable
 {
     abstract public function actionIndex($params);
 
     public function run(){
         session_start();
-        $action = (isset($_REQUEST["action"])&&(strlen($_REQUEST["action"])>0)) ? $_REQUEST["action"] : null;
+        $action = (isset($_REQUEST["action"]) && (strlen($_REQUEST["action"])>0)) ? $_REQUEST["action"] : null;
         $params = isset($_REQUEST["params"]) ? array($_REQUEST["params"]) : array();
         if(!is_null($action)){
             if(method_exists($this,"action".ucfirst($action))) {
