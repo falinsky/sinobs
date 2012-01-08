@@ -1,10 +1,15 @@
 <?php
 
-abstract class BaseApplication extends Observable
+abstract class BaseApplication
 {
     abstract public function actionIndex($params);
 
+    public function preRun(){
+
+    }
+
     public function run(){
+        $this->preRun();
         session_start();
         $action = (isset($_REQUEST["action"]) && (strlen($_REQUEST["action"])>0)) ? $_REQUEST["action"] : null;
         $params = isset($_REQUEST["params"]) ? array($_REQUEST["params"]) : array();

@@ -2,8 +2,10 @@
 
 class App extends BaseApplication
 {
-    const EVENT_LOGIN_SUCCESS = 1;
-    const EVENT_LOGIN_FAILURE = 2;
+    public function preRun(){
+        $this->observable = Observable::getInstance();
+        $this->observable->addObserver(new FileLogger(),Observable::EVENT_LOGIN_FAILURE);
+    }
 
     public function actionIndex($params=null){
         if(isset($_SESSION["user"])){
@@ -34,7 +36,7 @@ class App extends BaseApplication
                if(!is_null($user)){
                    $_SESSION["user"] = $user;
 
-                   $this->notify(App::EVENT_LOGIN_SUCCESS);
+                   $this->observable->notify(Observable::EVENT_LOGIN_SUCCESS);
 
                    header("Location: /");
                } else {
@@ -52,7 +54,7 @@ class App extends BaseApplication
 
         if(isset($error) && (count($error)>0)) {
 
-           $this->notify(App::EVENT_LOGIN_FAILURE);
+           $this->observable->notify(Observable::EVENT_LOGIN_FAILURE);
 
            foreach($error as $e){
                 echo "<span style='color:#ff0000'>".$e."</span><br/>";
