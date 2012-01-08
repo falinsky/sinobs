@@ -3,9 +3,13 @@
 class FileLogger implements IObserver
 {
     public function notify(IObservable $observable, $eventType){
-        if(($eventType == Observable::EVENT_LOGIN_FAILURE) && ($observable instanceof Observable)){
+        if($observable instanceof Observable){
             $log = new KLogger("log", KLogger::DEBUG);
-            $log->logInfo("Wrong pair login/pass with login \"LOGIN\"");
+            if($eventType == Observable::EVENT_LOGIN_FAILURE){
+                $log->logInfo("Wrong pair login/pass with login \"LOGIN\"");
+            } elseif($eventType == Observable::EVENT_LOGIN_SUCCESS){
+                $log->logInfo("Success login of user \"LOGIN\"");
+            }
         }
     }
 }

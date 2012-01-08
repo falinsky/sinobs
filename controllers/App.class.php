@@ -5,6 +5,7 @@ class App extends BaseApplication
     public function preRun(){
         $this->observable = Observable::getInstance();
         $this->observable->addObserver(new FileLogger(),Observable::EVENT_LOGIN_FAILURE);
+        $this->observable->addObserver(new FileLogger(),Observable::EVENT_LOGIN_SUCCESS);
     }
 
     public function actionIndex($params=null){
@@ -61,28 +62,7 @@ class App extends BaseApplication
            }
         }
 
-        echo "<form action='/' method='POST'>
-                <input type='hidden' name='action' value='login'/>
-                <label for='login'>Login:</label>
-                <input id='login' type='text' name='params[user][login]'";
-
-        if(isset($params["user"]["login"])) {
-            echo "value='".$params["user"]["login"]."'";
-        }
-        echo "   />";
-
-        echo "   <br/>
-                <label for='pass'>Pass:</label>&nbsp;&nbsp;
-                <input id='pass' type='password' name='params[user][pass]'";
-
-        if(isset($params["user"]["pass"])) {
-            echo "value='".$params["user"]["pass"]."'";
-        }
-        echo "   />";
-
-        echo "   <br/>
-                <input type='submit'/>
-            </form>";
+        require(TEMPLATE_DIR."/app/loginForm.php");
 
     }
 
