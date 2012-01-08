@@ -10,8 +10,7 @@ class Auth
         $user = $dbh->fetch();
         if($user&&(md5($pass)==$user->pass)) {
             return (array)$user;
-        } else {
-            return null;
         }
+        return null;
     }
 }
