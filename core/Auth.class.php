@@ -9,9 +9,9 @@ class Auth
         $dbh->setFetchMode(PDO::FETCH_OBJ);
         $user = $dbh->fetch();
         if($user&&(md5($pass)==$user->pass)) {
-            return $user;
+            return (array)$user;
         } else {
-            return false;
+            return null;
         }
     }
 }
