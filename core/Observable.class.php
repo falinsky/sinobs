@@ -25,9 +25,9 @@ class Observable implements IObservable
         $this->_observers[$eventType][] = $observer;
     }
 
-    public function notify($eventType){
+    public function notify($eventType, $data){
         foreach($this->_observers[$eventType] as $observer){
-            $observer->notify($this,$eventType);
+            $observer->notify($this,$eventType, $data);
         }
     }
 }

@@ -15,6 +15,7 @@ require_once("core/IObservable.class.php");
 require_once("core/Observable.class.php");
 require_once("core/IObserver.class.php");
 require_once("core/FileLogger.class.php");
+require_once("core/DbLogger.class.php");
 require_once("core/BaseApplication.class.php");
 
 require_once("controllers/App.class.php");

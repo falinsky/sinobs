@@ -4,8 +4,9 @@ class App extends BaseApplication
 {
     public function preRun(){
         $this->observable = Observable::getInstance();
-        $this->observable->addObserver(new FileLogger(),Observable::EVENT_LOGIN_FAILURE);
-        $this->observable->addObserver(new FileLogger(),Observable::EVENT_LOGIN_SUCCESS);
+        $this->observable->addObserver(new FileLogger(), Observable::EVENT_LOGIN_FAILURE);
+        $this->observable->addObserver(new FileLogger(), Observable::EVENT_LOGIN_SUCCESS);
+        $this->observable->addObserver(new DbLogger(), Observable::EVENT_LOGIN_SUCCESS);
     }
 
     public function actionIndex($params=null){
@@ -37,7 +38,7 @@ class App extends BaseApplication
                if(!is_null($user)){
                    $_SESSION["user"] = $user;
 
-                   $this->observable->notify(Observable::EVENT_LOGIN_SUCCESS);
+                   $this->observable->notify(Observable::EVENT_LOGIN_SUCCESS, $user);
 
                    header("Location: /");
                } else {
@@ -54,8 +55,9 @@ class App extends BaseApplication
         echo "<h1>Login page</h1>";
 
         if(isset($error) && (count($error)>0)) {
-
-           $this->observable->notify(Observable::EVENT_LOGIN_FAILURE);
+           $data = array();
+           $data["login"] = isset($login)?$login:"";
+           $this->observable->notify(Observable::EVENT_LOGIN_FAILURE, $data);
 
            foreach($error as $e){
                 echo "<span style='color:#ff0000'>".$e."</span><br/>";
