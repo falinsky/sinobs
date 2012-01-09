@@ -2,7 +2,7 @@
 
 abstract class BaseApplication
 {
-    abstract public function actionIndex($params);
+    abstract public function actionIndex($params=null);
 
     public function preRun(){
 
