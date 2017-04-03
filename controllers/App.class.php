@@ -21,6 +21,9 @@ class App extends BaseApplication
         if(isset($_SESSION["user"])){
             header("Location: /");
         }
+        if(isset($_SESSION["user"])){
+            header("Location: /");
+        }
         if(isset($params["user"]) && isset($params["user"]["login"]) && isset($params["user"]["pass"])){
            $error = array();
            $login = trim(htmlspecialchars(stripslashes($params["user"]["login"])));
@@ -52,6 +55,10 @@ class App extends BaseApplication
            }
         }
 
+        if(isset($_SESSION["user"])){
+            header("Location: /");
+        }
+
         echo "<h1>Login page</h1>";
 
         if(isset($error) && (count($error)>0)) {
@@ -62,6 +69,10 @@ class App extends BaseApplication
            foreach($error as $e){
                 echo "<span style='color:#ff0000'>".$e."</span><br/>";
            }
+        }
+
+        if(isset($_SESSION["user"])){
+            header("Location: /");
         }
 
         require(TEMPLATE_DIR."/app/loginForm.php");
